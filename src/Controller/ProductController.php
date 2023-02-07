@@ -34,6 +34,14 @@ use Symfony\Component\Routing\Annotation\Route;
             'updated_at' => $product->getUpdatedAt(),
            ];
         }
+
+        return $this->json(
+            [ 
+                'status' => true, 
+                'msg' => '', 
+                'data' => $data
+            ]
+        );
   
         return $this->json($data);
     }
@@ -57,8 +65,22 @@ use Symfony\Component\Routing\Annotation\Route;
   
         $entityManager->persist($product);
         $entityManager->flush();
-  
-        return $this->json( $product);
+
+        return $this->json(
+            [ 
+                'status' => true, 
+                'msg' => '', 
+                'data' => [
+                    'id' => $product->getId(),
+                    'title' => $product->getTitle(),
+                    'image' => $product->getImage(),
+                    'price' => $product->getPrice(),
+                    'description' => $product->getDescription(),
+                    'created_at' => $product->getCreatedAt(),
+                    'updated_at' => $product->getUpdatedAt(),
+                ]
+            ]
+        );
     }
 
     #[Route('/product/{id}', name: 'show_product',  methods: ['GET'])]
@@ -67,7 +89,7 @@ use Symfony\Component\Routing\Annotation\Route;
         $product = $doctrine->getRepository(Product::class)->find($id);
   
         if (!$product) {
-            return $this->json('No product found for id' . $id, 404);
+            return $this->json(['status' => false, 'msg' => 'Product Not Found', 'data' => []]);
         }
   
         $data =  [
@@ -79,8 +101,15 @@ use Symfony\Component\Routing\Annotation\Route;
             'created_at' => $product->getCreatedAt(),
             'updated_at' => $product->getUpdatedAt(),
         ];
+
+        return $this->json(
+            [ 
+                'status' => true, 
+                'msg' => '', 
+                'data' => $data
+            ]
+        );
           
-        return $this->json($data);
     }
 
     #[Route('/product/{id}', name: 'edit_product',  methods: ['PUT'])]
@@ -90,8 +119,9 @@ use Symfony\Component\Routing\Annotation\Route;
         $product = $entityManager->getRepository(Product::class)->find($id);
   
         if (!$product) {
-            return $this->json('No product found for id' . $id, 404);
+            return $this->json(['status' => false, 'msg' => 'Product Not Found', 'data' => []]);
         }
+
         $parameters = json_decode($request->getContent(), true);
         $date = new \DateTimeImmutable('@'.strtotime('now'));
 
@@ -115,7 +145,13 @@ use Symfony\Component\Routing\Annotation\Route;
             'updated_at' => $product->getUpdatedAt(),
         ];
           
-        return $this->json($data);
+        return $this->json(
+            [ 
+                'status' => true, 
+                'msg' => '', 
+                'data' => $data
+            ]
+        );
     }
 
     #[Route('/product/{id}', name: 'delete_product',  methods: ['DELETE'])]
@@ -125,12 +161,12 @@ use Symfony\Component\Routing\Annotation\Route;
         $product = $entityManager->getRepository(Product::class)->find($id);
   
         if (!$product) {
-            return $this->json('No product found for id' . $id, 404);
+            return $this->json(['status' => false, 'msg' => 'Product Not Found', 'data' => []]);
         }
   
         $entityManager->remove($product);
         $entityManager->flush();
   
-        return $this->json('Deleted a product successfully with id ' . $id);
+        return $this->json(['status' => true, 'msg' => 'Deleted a product successfully with id ' . $id, 'data' => []]);
     }
 }

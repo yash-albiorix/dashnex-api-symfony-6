@@ -13,9 +13,9 @@ class Cart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Product $product_id = null;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'], fetch:'EAGER')]
+    #[ORM\JoinColumn(name:'product_id', referencedColumnName:'id', nullable:false)]
+    private ?Product $product = null;
 
     #[ORM\Column]
     private ?int $quantity = null;
@@ -31,14 +31,14 @@ class Cart
         return $this->id;
     }
 
-    public function getProductId(): ?Product
+    public function getProduct(): ?Product
     {
-        return $this->product_id;
+        return $this->product;
     }
 
-    public function setProductId(Product $product_id): self
+    public function setProduct(Product $product): self
     {
-        $this->product_id = $product_id;
+        $this->product = $product;
 
         return $this;
     }

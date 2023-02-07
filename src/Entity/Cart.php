@@ -4,8 +4,38 @@ namespace App\Entity;
 
 use App\Repository\CartRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use App\Controller\CartController;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 
 #[ORM\Entity(repositoryClass: CartRepository::class)]
+#[ApiResource(operations: [
+    new GetCollection(
+        routeName:'api_app_cart'
+    ),
+    new Get(
+        name: 'cart/{id}',
+        routeName:'api_show_cart'
+    ),
+    new Post(
+        name: 'cart',
+        routeName:'api_new_cart',
+        controller: CartController::class
+    ),
+    new Put(
+        name: 'cart/{id}',
+        routeName:'api_edit_cart',
+    ),
+    new Delete(
+        name: 'cart',
+        routeName:'api_delete_cart',
+    )
+])]
+
 class Cart
 {
     #[ORM\Id]

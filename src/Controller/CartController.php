@@ -192,7 +192,7 @@ class CartController extends AbstractController
         'created_at' => $cart->getCreatedAt(),
         'updated_at' => $cart->getUpdatedAt(),
        ];
-       
+
         return $this->json(
             [ 
                 'status' => true, 
@@ -200,5 +200,21 @@ class CartController extends AbstractController
                 'data' => $data
             ]
         );
+    }
+
+    #[Route('/cart/{id}', name: 'delete_cart',  methods: ['DELETE'])]
+    public function delete(ManagerRegistry $doctrine, int $id): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $cart = $entityManager->getRepository(Cart::class)->find($id);
+  
+        if (!$cart) {
+            return $this->json(['status' => false, 'msg' => 'Cart Not Found', 'data' => []]);
+        }
+  
+        $entityManager->remove($cart);
+        $entityManager->flush();
+  
+        return $this->json(['status' => true, 'msg' => 'Deleted a Cart successfully with id ' . $id, 'data' => []]);
     }
 }

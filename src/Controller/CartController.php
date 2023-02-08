@@ -24,7 +24,7 @@ class CartController extends AbstractController
   
         foreach ($carts as $cart) {
 
-            $product[] = array(
+            $product = array(
                 'id' => $cart->getProduct()->getId(),
                 'title' => $cart->getProduct()->getTitle(),
                 'image' => $cart->getProduct()->getImage(),
@@ -96,7 +96,7 @@ class CartController extends AbstractController
          }
 
 
-        $product = array(
+        $productData = array(
             'id' => $cart->getProduct()->getId(),
             'title' => $cart->getProduct()->getTitle(),
             'image' => $cart->getProduct()->getImage(),
@@ -105,14 +105,14 @@ class CartController extends AbstractController
             'created_at' => $cart->getProduct()->getCreatedAt(),
             'updated_at' => $cart->getProduct()->getUpdatedAt(),
         );
-    
+
         return $this->json(
             [ 
                 'status' => true, 
                 'msg' => '', 
                 'data' => [
                     'id' => $cart->getId(),
-                    'productId' => $product,
+                    'productId' => $productData,
                     'quantity' => $cart->getQuantity(),
                     'created_at' => $cart->getCreatedAt(),
                     'updated_at' => $cart->getUpdatedAt()

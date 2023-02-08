@@ -43,7 +43,7 @@ class Cart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'], fetch:'EAGER')]
+    #[ORM\OneToOne(cascade: ['persist'], fetch:'EAGER')]
     #[ORM\JoinColumn(name:'product_id', referencedColumnName:'id', nullable:false)]
     private ?Product $product = null;
 

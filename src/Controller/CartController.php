@@ -95,7 +95,8 @@ class CartController extends AbstractController
              }
          }
 
-        $product[] = array(
+
+        $product = array(
             'id' => $cart->getProduct()->getId(),
             'title' => $cart->getProduct()->getTitle(),
             'image' => $cart->getProduct()->getImage(),
